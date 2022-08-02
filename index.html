@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="Coversor de moneda" />
+    <meta name="description" content="Página de empresa conerción de moneda" />
+    <meta name="author" content="Juan González Covarrubias" />
+    <title>Conversor de moneda</title>
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Coversor de Moneda</h1>
+      <p id="messageServer">Esperando información adicional del servidor</p>
+      <div class="date">
+        <p id="todayDates">Esperando fecha de tu consulta</p>
+        <p id="exchangeDate">
+          Esperando ultima fecha de modificación del tipo de cambio
+        </p>
+      </div>
+    </header>
+    <main>
+      <section id="currencyConverter">
+        <h3>Pesos CLP</h3>
+        <input type="number" id="clp" class="in" />
+        <h4>Moneda o unidad de valor a convertir</h4>
+        <select class="in" id="selector">
+          <option value="dolar">Dolar</option>
+          <option value="euro">Euro</option>
+          <option value="uf">UF</option>
+          <option value="utm">UTM</option>
+          <option value="malo">Tipo de cambio no existe</option>
+        </select>
+        <button id="search">Buscar</button>
+        <h4 id="resultTitle">Resultado</h4>
+        <h4 id="result">0000 Dolares</h4>
+      </section>
+    </main>
+    <div id="chartContainer">
+      <canvas id="myChart" height="300" width="800"></canvas>
+    </div>
+
+    <script src="assets/js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </body>
+</html>
