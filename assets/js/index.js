@@ -8,9 +8,16 @@ const exchangeDate = document.querySelector('#exchangeDate')
 const clp = document.querySelector('#clp')
 const messageServer = document.querySelector('#messageServer')
 const result = document.querySelector('#result')
+const html = document.querySelector('.table_body')
+const containerTable = document.querySelector('#container_table')
+const containerTableBody = document.querySelector('.table_body')
+const numReg = document.querySelector('#nu_reg')
+
 let myChart = null
+let templateTable = ''
 result.innerHTML = '..'
-//Comunicacion con el EndPoint
+
+//Resetean los parámetros
 function reset() {
   if (myChart != null) {
     myChart.destroy()
@@ -19,13 +26,16 @@ function reset() {
   todayDates.innerHTML = 'Sin información disponible'
   exchangeDate.innerHTML = 'Sin información disponible'
 }
+
+//Comunicación con el EndPoint
+
 async function ConectionServer(type) {
   try {
     currency = selector.value
     const res = await fetch(`${apiURL}${currency}`)
     if (res.status === 200) {
       const data = await res.json()
-      messageServer.innerHTML = 'Mensaje del Servidor: La conexion fue exitosa'
+      messageServer.innerHTML = 'Mensaje del Servidor: La conexión fue exitosa'
       date(data.serie[0].fecha)
       calculate(data.serie[0].valor, type)
       calcArray(data.serie)
@@ -41,13 +51,27 @@ async function ConectionServer(type) {
   }
 }
 //Validaciones de Ingreso
-async function validation(type) {
+function validation(type) {
   if (clp.value === '' && type === 'click') {
     alert('Debes ingresar una cantidad a convertir')
     return
   }
   if (isNaN(clp.value) && type === 'click') {
-    alert('Solo puedes ingresar valores Numericos')
+    alert('Solo puedes ingresar valores numéricos en la cantidad aconvertir')
+    return
+  }
+  if (isNaN(numReg.value) && type === 'click') {
+    alert(
+      'Solo puedes ingresar valores numéricos en el número de registros a graficar'
+    )
+    return
+  }
+  if (numReg.value > 31 && type === 'click') {
+    alert('El máximo de registros a graficar es de 31')
+    return
+  }
+  if (numReg.value === '' && type === 'click') {
+    alert('Debes ingresar el número de registros a graficar')
     return
   }
   ConectionServer(type)
@@ -56,7 +80,7 @@ async function validation(type) {
 btn.addEventListener('click', () => {
   validation('click')
 })
-//Busca la fecha acttual del sistema y la ultima fecha de modificacion al tipo de cambio
+//Busca la fecha actual del sistema y la última fecha de modificación al tipo de cambio
 function date(dateLast) {
   let dateNow = new Date()
   let dateIN =
@@ -91,10 +115,13 @@ function calculate(exchangeRate, type) {
 }
 //Grafico
 function calcArray(datIn) {
-  console.log(datIn)
-  let n = 10
+  let n = numReg.value
+  //Se muestra los 10 primeros valores
   let datFilter = datIn.slice(0, n)
+  tableRender(datFilter)
+  //Se davuelta el arreglo para dejar en orden los datos
   const reversed = datFilter.reverse()
+  //Aca se pasa la fecha a formato DD/MM/YYYY
   const datLabel = reversed.map(
     (x) =>
       `${x.fecha.substring(8, 10)}-${x.fecha.substring(
@@ -145,8 +172,44 @@ function chartRender(datLabel, datChange) {
       scales: {
         y: {
           beginAtZero: true,
+          grid: {
+            color: 'DarkTurquoise',
+          },
+        },
+        x: {
+          beginAtZero: true,
+          grid: {
+            color: 'DarkTurquoise',
+          },
         },
       },
     },
   })
 }
+//Esto muestra los valores en la tabla
+function tableRender(data) {
+  containerTableBody.setAttribute(
+    'style',
+    'border-radius: 5px;  border-style: double;  width: 98%;  margin-left: 20px;'
+  )
+  containerTable.innerHTML = `<table class="table_head">
+  <tr>
+    <th class="title_date title_list">FECHA</th>
+    <th class="title_value title_list">${currency.toUpperCase()}</th>
+  </tr>
+</table>`
+
+  templateTable = ''
+  for (let dat of data) {
+    console.log(dat)
+    templateTable += `<tr> <th class="title_date title_dat">${dat.fecha.substring(
+      8,
+      10
+    )}-${dat.fecha.substring(5, 7)}-${dat.fecha.substring(0, 4)}</th>
+    <th class="title_value title_dat">${dat.valor}</th> </tr>`
+  }
+
+  html.innerHTML = templateTable
+}
+
+containerTableBody.setAttribute('style', 'display:none;')
