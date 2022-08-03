@@ -19,7 +19,6 @@ function reset() {
   todayDates.innerHTML = 'Sin información disponible'
   exchangeDate.innerHTML = 'Sin información disponible'
 }
-
 async function ConectionServer(type) {
   try {
     currency = selector.value
@@ -41,7 +40,6 @@ async function ConectionServer(type) {
     reset()
   }
 }
-
 //Validaciones de Ingreso
 async function validation(type) {
   if (clp.value === '' && type === 'click') {
@@ -54,13 +52,12 @@ async function validation(type) {
   }
   ConectionServer(type)
 }
-
+//Boton
 btn.addEventListener('click', () => {
   validation('click')
 })
-
 //Busca la fecha acttual del sistema y la ultima fecha de modificacion al tipo de cambio
-async function date(dateLast) {
+function date(dateLast) {
   let dateNow = new Date()
   let dateIN =
     String(dateNow.getDate()).padStart(2, '0') +
@@ -74,9 +71,8 @@ async function date(dateLast) {
     10
   )}-${dateLast.substring(5, 7)}-${dateLast.substring(0, 4)}`
 }
-
 //Calculado el tipo de cambio
-async function calculate(exchangeRate, type) {
+function calculate(exchangeRate, type) {
   currency = selector.value
   let suffix = 'USD'
   if (currency === 'dolar') {
@@ -93,10 +89,8 @@ async function calculate(exchangeRate, type) {
     clp.value = ''
   }
 }
-
 //Grafico
-
-async function calcArray(datIn) {
+function calcArray(datIn) {
   console.log(datIn)
   let n = 10
   let datFilter = datIn.slice(0, n)
@@ -117,7 +111,7 @@ function chartRender(datLabel, datChange) {
     myChart.destroy()
   }
   myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
 
     data: {
       labels: datLabel,
