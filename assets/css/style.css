@@ -119,9 +119,11 @@ th {
 
 .section_reg {
   margin-top: 25px;
+  margin-right: 750px;
   align-items: initial;
 }
 #canvas_container {
-  margin-left: 50px;
+  margin-left: 450px;
   display: flex;
+  position: fixed;
 }
