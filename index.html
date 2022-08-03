@@ -18,7 +18,7 @@
       <div class="date">
         <p id="todayDates">Esperando fecha de tu consulta</p>
         <p id="exchangeDate">
-          Esperando ultima fecha de modificación del tipo de cambio
+          Esperando última fecha de modificación del tipo de cambio
         </p>
       </div>
     </header>
@@ -34,15 +34,24 @@
           <option value="utm">UTM</option>
           <option value="malo">Tipo de cambio no existe</option>
         </select>
+        <h4>Números de registros a graficar (max:31)</h4>
+        <input type="number" max="31" value="10" id="nu_reg" class="in" />
         <button id="search">Buscar</button>
         <h4 id="resultTitle">Resultado</h4>
-        <h4 id="result">0000 Dolares</h4>
+        <h4 id="result">0000 Dólares</h4>
       </section>
     </main>
     <div id="chartContainer">
-      <canvas id="myChart" height="300" width="800"></canvas>
+      <section class="section_reg">
+        <div id="container_table"></div>
+        <div class="scroll-container">
+          <table class="table_body"></table>
+        </div>
+      </section>
+      <div id="canvas_container">
+        <canvas id="myChart" height="300" width="800"></canvas>
+      </div>
     </div>
-
     <script src="assets/js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </body>

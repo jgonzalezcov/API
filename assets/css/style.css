@@ -18,7 +18,7 @@ main {
 }
 
 #search {
-  margin-top: 20px;
+  margin-top: 10px;
   height: 40px;
   width: 200px;
   border-radius: 10px;
@@ -37,7 +37,7 @@ h4 {
   justify-content: center;
   align-items: center;
   margin-top: 15px;
-  height: 250px;
+  height: 280px;
   width: 300px;
   background-color: #223e41;
   border-radius: 20px;
@@ -48,6 +48,7 @@ h4 {
   border-radius: 10px;
   height: 35px;
   width: 200px;
+  text-align: center;
 }
 
 #todayDates {
@@ -69,13 +70,58 @@ h4 {
   margin-top: 20px;
 }
 #chartContainer {
-  margin-top: 30px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background-color: #000;
   top: 8px;
   left: 8px;
   right: 8px;
   bottom: 8px;
+}
+.table_head {
+  border-radius: 5px;
+  border-style: double;
+  width: 98%;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.table_body {
+  border-radius: 5px;
+  border-style: double;
+  width: 98%;
+  margin-left: 20px;
+}
+.title_list {
+  border: 1px solid #fff;
+  background-color: #223e41;
+  color: #fff;
+}
+.title_dat {
+  border: 1px solid #fff;
+  background-color: #8faecb;
+  color: #000;
+}
+tr {
+  text-align: center;
+  width: 100px;
+}
+
+td {
+  border: 1px solid #fff;
+  width: 100px;
+}
+
+th {
+  width: 100px;
+}
+
+.section_reg {
+  margin-top: 25px;
+  align-items: initial;
+}
+#canvas_container {
+  margin-left: 50px;
+  display: flex;
 }
