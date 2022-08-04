@@ -42,6 +42,7 @@ h4 {
   background-color: #223e41;
   border-radius: 20px;
   border: solid 3px #00e1ff;
+  margin-bottom: 15px;
 }
 
 .in {
@@ -53,21 +54,21 @@ h4 {
 
 #todayDates {
   color: #d8fb16;
-  margin-top: 10px;
+  margin-top: 2px;
 }
 #exchangeDate {
   color: #37c25a;
-  margin-top: 10px;
+  margin-top: 2px;
 }
 #messageServer {
   color: #b5a9e3;
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 #mychart {
   border: solid 3px #00e1ff;
   border-radius: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 #chartContainer {
   margin-top: 10px;
@@ -105,16 +106,16 @@ h4 {
 }
 tr {
   text-align: center;
-  width: 100px;
+  width: 120px;
 }
 
 td {
   border: 1px solid #fff;
-  width: 100px;
+  width: 120px;
 }
 
 th {
-  width: 100px;
+  width: 120px;
 }
 
 .section_reg {
@@ -123,7 +124,19 @@ th {
   align-items: initial;
 }
 #canvas_container {
+  margin-top: 15px;
   margin-left: 450px;
   display: flex;
   position: fixed;
+}
+.dat_value {
+  text-align: right;
+}
+
+#button_graphic {
+  background-color: #ff0000;
+  color: #fff;
+  height: 20px;
+  width: 230px;
+  border-radius: 10px;
 }
