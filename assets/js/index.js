@@ -2,6 +2,7 @@
 const apiURL = 'https://mindicador.cl/api/'
 let currency = 'dolar'
 const btn = document.querySelector('#search')
+const btnGraph = document.querySelector('#button_graphic')
 const selector = document.querySelector('#selector')
 const todayDates = document.querySelector('#todayDates')
 const exchangeDate = document.querySelector('#exchangeDate')
@@ -12,10 +13,14 @@ const html = document.querySelector('.table_body')
 const containerTable = document.querySelector('#container_table')
 const containerTableBody = document.querySelector('.table_body')
 const numReg = document.querySelector('#nu_reg')
-
+let suffixPrefix = 'USD'
+let typeExpression = ''
 let myChart = null
 let templateTable = ''
 result.innerHTML = '..'
+let datLabelIni = []
+let datChangeIni = []
+let typeGrafic = 'line'
 
 //Resetean los parámetros
 function reset() {
@@ -76,10 +81,7 @@ function validation(type) {
   }
   ConectionServer(type)
 }
-//Boton
-btn.addEventListener('click', () => {
-  validation('click')
-})
+
 //Busca la fecha actual del sistema y la última fecha de modificación al tipo de cambio
 function date(dateLast) {
   let dateNow = new Date()
@@ -95,56 +97,70 @@ function date(dateLast) {
     10
   )}-${dateLast.substring(5, 7)}-${dateLast.substring(0, 4)}`
 }
-//Calculado el tipo de cambio
+//Se realiza el cálculo de la conversión de moneda y se establece un sufijo o prefijo según corresponda
 function calculate(exchangeRate, type) {
   currency = selector.value
-  let suffix = 'USD'
+
   if (currency === 'dolar') {
-    suffix = 'DOLARES'
+    suffixPrefix = 'US$'
+    typeExpression = 'pre'
   } else if (currency === 'euro') {
-    suffix = 'EUROS'
+    suffixPrefix = '€'
+    typeExpression = 'pre'
   } else if (currency === 'utm') {
-    suffix = 'UTM'
+    suffixPrefix = `UTM's`
+    typeExpression = 'suf'
   } else if (currency === 'uf') {
-    suffix = 'UF'
+    suffixPrefix = `UF's`
+    typeExpression = 'suf'
   }
+
   if (type === 'click') {
-    result.innerHTML = `${(clp.value / exchangeRate).toFixed(2)} ${suffix}`
+    let num = Number((clp.value / exchangeRate).toFixed(2))
+    if (typeExpression === 'suf') {
+      result.innerHTML = `${num.toLocaleString('de-DE')} ${suffixPrefix}`
+    } else if (typeExpression === 'pre') {
+      result.innerHTML = `${suffixPrefix} ${num.toLocaleString('de-DE')}`
+    }
     clp.value = ''
   }
 }
-//Grafico
+
+//Convertir array para ser desplegado en el grafico
 function calcArray(datIn) {
   let n = numReg.value
   //Se muestra los 10 primeros valores
   let datFilter = datIn.slice(0, n)
   tableRender(datFilter)
-  //Se davuelta el arreglo para dejar en orden los datos
+  //Se da vuelta el arreglo para dejar en orden los datos
   const reversed = datFilter.reverse()
-  //Aca se pasa la fecha a formato DD/MM/YYYY
-  const datLabel = reversed.map(
+  //Acá se pasa la fecha a formato DD/MM/YYYY
+  datLabelIni = reversed.map(
     (x) =>
       `${x.fecha.substring(8, 10)}-${x.fecha.substring(
         5,
         7
       )}-${x.fecha.substring(0, 4)}`
   )
-  const datChange = reversed.map((x) => x.valor)
-  chartRender(datLabel, datChange)
+  datChangeIni = reversed.map((x) => x.valor)
+  chartRender(datLabelIni, datChangeIni)
 }
+
+//Grafico
+
 function chartRender(datLabel, datChange) {
   const ctx = document.getElementById('myChart').getContext('2d')
   if (myChart != null) {
     myChart.destroy()
   }
   myChart = new Chart(ctx, {
-    type: 'line',
+    type: typeGrafic,
 
     data: {
       labels: datLabel,
       datasets: [
         {
-          label: `Valor: ${currency.toUpperCase()}`,
+          label: `Valor ${currency.toUpperCase()} en $CLP`,
           data: datChange,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
@@ -169,6 +185,7 @@ function chartRender(datLabel, datChange) {
     options: {
       maintainAspectRatio: false,
       responsive: false,
+
       scales: {
         y: {
           beginAtZero: true,
@@ -186,7 +203,7 @@ function chartRender(datLabel, datChange) {
     },
   })
 }
-//Esto muestra los valores en la tabla
+//Esto muestra los valores en la tabla y configura la visualización botón de gráficos
 function tableRender(data) {
   containerTableBody.setAttribute(
     'style',
@@ -198,18 +215,42 @@ function tableRender(data) {
     <th class="title_value title_list">${currency.toUpperCase()}</th>
   </tr>
 </table>`
-
+  //Se muestra botón de cambio de grafico
+  btnGraph.setAttribute(
+    'style',
+    'background-color: #ff0000;  color: #fff;  height: 20px;  width: 230px;  border-radius: 10px;   position: fixed;'
+  )
   templateTable = ''
   for (let dat of data) {
-    console.log(dat)
-    templateTable += `<tr> <th class="title_date title_dat">${dat.fecha.substring(
+    templateTable += `<tr> <td class="title_date title_dat">${dat.fecha.substring(
       8,
       10
-    )}-${dat.fecha.substring(5, 7)}-${dat.fecha.substring(0, 4)}</th>
-    <th class="title_value title_dat">${dat.valor}</th> </tr>`
+    )}-${dat.fecha.substring(5, 7)}-${dat.fecha.substring(0, 4)}</td>
+    <td class="title_value title_dat dat_value">$${dat.valor.toLocaleString(
+      'de-DE'
+    )} CLP</td> </tr>`
   }
 
   html.innerHTML = templateTable
 }
 
+//Botón conversión
+btn.addEventListener('click', () => {
+  validation('click')
+})
+
+//Botón Tipo de grafico
+btnGraph.addEventListener('click', () => {
+  if (typeGrafic === 'line') {
+    typeGrafic = 'bar'
+    btnGraph.innerHTML = 'Cambiar a grafico de lineas'
+  } else if (typeGrafic === 'bar') {
+    typeGrafic = 'line'
+    btnGraph.innerHTML = 'Cambiar a grafico de barras'
+  }
+
+  chartRender(datLabelIni, datChangeIni)
+})
+//Esto Oculta elementos que aún no son necesarios (Botón de cambio de tipo de gráfico y gráfico)
 containerTableBody.setAttribute('style', 'display:none;')
+btnGraph.setAttribute('style', 'display:none;')
