@@ -9,5 +9,3 @@ Info Endpoint
 -------------
 
 The documentation is available on:(https://mindicador.cl/)
-
-
